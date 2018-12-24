@@ -116,7 +116,7 @@ if __name__ == "__main__":
     lr.fit(x, y.ravel())
 
     # 画图
-    N, M = 500, 500     # 横纵各采样多少个值
+    N, M = 1000, 1000    # 横纵各采样多少个值
     # 取第一列最小值和最大值
     x1_min, x1_max = x[:, 0].min(), x[:, 0].max()   # 第0列的范围
     # 取第二列最小值和最大值
@@ -128,8 +128,16 @@ if __name__ == "__main__":
     t1 = np.linspace(x1_min, x1_max, N)
     t2 = np.linspace(x2_min, x2_max, M)
 
-
+    '''
+    meshgrid的作用是根据传入的两个一维数组参数生成两个数组元素的列表
+    如果第一个参数是xarray，维度xdimesion，第二个参数是yarray，维度是
+    ydimesion。那么生成的第一个二维数组是以xarray为行，ydimesion行的向量
+    而第二个二维数组是以yarray的转置为列，xdimesion列的向量
+    '''
     x1, x2 = np.meshgrid(t1, t2)                    # 生成网格采样点
+    print(x1)
+    print(x2)
+
     x_test = np.stack((x1.flat, x2.flat), axis=1)   # 测试点
 
     # 无意义，只是为了凑另外两个维度
