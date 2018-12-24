@@ -26,12 +26,6 @@ python2.7和python3的区别
     
 '''
 
-def iris_type(s):
-
-    it = {b'Iris-setosa': 0, b'Iris-versicolor': 1, b'Iris-virginica': 2}
-    return it[s]
-
-    # return it[s]
 
 
 if __name__ == "__main__":
@@ -84,34 +78,57 @@ if __name__ == "__main__":
     
     '''
 
+
+    def iris_type(s):
+        it = {b'Iris-setosa': 0, b'Iris-versicolor': 1, b'Iris-virginica': 2}
+        return it[s]
+
+        # return it[s]
+
+
     # 路径，浮点型数据，逗号分隔，第4列使用函数iris_type单独处理
     data = np.loadtxt(path, dtype=float, delimiter=',', converters={4:iris_type})
     # print (data)
     # 将数据的0到3列组成x，第4列得到y
+    # 把data数据集中的所有数据按第四、五列之间分割为x集，y集
     x, y = np.split(data, (4,), axis=1)
 
     # 为了可视化，仅使用前两列特征
     x = x[:, :2]
 
-    print (x)
-
-    print (y)
+    # print (x)
+    #
+    # print (y)
 
     # x = StandardScaler().fit_transform(x)
     # lr = LogisticRegression()   # Logistic回归模型
     # #     lr.fit(x, y.ravel())        # 根据数据[x,y]，计算回归参数
     # #
     # 等价形式
+
+    '''
+    peieline构造器接受(name,transform)tuple的列表作为参数。按顺序执行列表中的transform，完成数据预处理
+    
+    
+    '''
     lr = Pipeline([('sc', StandardScaler()),
                 ('clf', LogisticRegression()) ])
     lr.fit(x, y.ravel())
 
     # 画图
     N, M = 500, 500     # 横纵各采样多少个值
+    # 取第一列最小值和最大值
     x1_min, x1_max = x[:, 0].min(), x[:, 0].max()   # 第0列的范围
+    # 取第二列最小值和最大值
     x2_min, x2_max = x[:, 1].min(), x[:, 1].max()   # 第1列的范围
+
+    # 在默认情况下，linspace函数可以生成元素为50的等间隔数列。而前两个参数分别是数列的开头与结尾
+    # 如果写入第三个参数，可以指定数列的元素个数。
+    # 以最最小值和最大值生成500个等间隔数列
     t1 = np.linspace(x1_min, x1_max, N)
     t2 = np.linspace(x2_min, x2_max, M)
+
+
     x1, x2 = np.meshgrid(t1, t2)                    # 生成网格采样点
     x_test = np.stack((x1.flat, x2.flat), axis=1)   # 测试点
 
@@ -125,7 +142,7 @@ if __name__ == "__main__":
     y_hat = lr.predict(x_test)                  # 预测值
     y_hat = y_hat.reshape(x1.shape)                 # 使之与输入的形状相同
     plt.pcolormesh(x1, x2, y_hat, cmap=cm_light)     # 预测值的显示
-    plt.scatter(x[:, 0], x[:, 1], c=y, edgecolors='k', s=50, cmap=cm_dark)    # 样本的显示
+    plt.scatter(x[:, 0], x[:, 1], c=y.ravel(), edgecolors='k', s=50, cmap=cm_dark)    # 样本的显示
     plt.xlabel('petal length')
     plt.ylabel('petal width')
     plt.xlim(x1_min, x1_max)
