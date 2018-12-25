@@ -27,18 +27,25 @@ if __name__ == "__main__":
 
     path = 'C:/Users/meridian/Desktop/8.Regression/8.iris.data'  # 数据文件路径
     data = np.loadtxt(path, dtype=float, delimiter=',', converters={4: iris_type})
+    # 将第四列和第五列分为x和y两个数据集
     x, y = np.split(data, (4,), axis=1)
     # 为了可视化，仅使用前两列特征
     x = x[:, :2]
+    # 此处测试数据选择为30%
+    '''
+    random_state设置相同，那么当别人重新运行你的代码的时候就会得到完全一样的结果
+    如果设置为None，则会随机选择一个种子，导致每次的运行结果都不相同
+    '''
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=1)
     #ss = StandardScaler()
     #ss = ss.fit(x_train)
 
-    # 决策树参数估计
+    # 决策树参数估计（预剪枝）
     # min_samples_split = 10：如果该结点包含的样本数目大于10，则(有可能)对其分支
     # min_samples_leaf = 10：若将某结点分支后，得到的每个子结点样本数目都大于10，则完成分支；否则，不进行分支
     model = Pipeline([
         ('ss', StandardScaler()),
+        # 树的层数为3层，层数过多会造成过拟合
         ('DTC', DecisionTreeClassifier(criterion='entropy', max_depth=3))])
     # clf = DecisionTreeClassifier(criterion='entropy', max_depth=3)
     model = model.fit(x_train, y_train)
@@ -56,6 +63,7 @@ if __name__ == "__main__":
     t1 = np.linspace(x1_min, x1_max, N)
     t2 = np.linspace(x2_min, x2_max, M)
     x1, x2 = np.meshgrid(t1, t2)  # 生成网格采样点
+    # 样本中包含的所有连续值
     x_show = np.stack((x1.flat, x2.flat), axis=1)  # 测试点
 
     # # 无意义，只是为了凑另外两个维度
@@ -66,6 +74,7 @@ if __name__ == "__main__":
 
     cm_light = mpl.colors.ListedColormap(['#A0FFA0', '#FFA0A0', '#A0A0FF'])
     cm_dark = mpl.colors.ListedColormap(['g', 'r', 'b'])
+    # 讲x_show 中所有的值进行预测，得出相应的颜色分布图
     y_show_hat = model.predict(x_show)  # 预测值
     y_show_hat = y_show_hat.reshape(x1.shape)  # 使之与输入的形状相同
     plt.figure(facecolor='w')
@@ -80,29 +89,29 @@ if __name__ == "__main__":
     plt.title(u'鸢尾花数据的决策树分类', fontsize=17)
     plt.show()
 
-    # # 训练集上的预测结果
-    # y_test = y_test.reshape(-1)
-    # print (y_test_hat)
-    # print (y_test)
-    # result = (y_test_hat == y_test)   # True则预测正确，False则预测错误
-    # acc = np.mean(result)
-    # print ('准确度: %.2f%%' % (100 * acc))
-    #
+    # 训练集上的预测结果
+    y_test = y_test.reshape(-1)
+    print (y_test_hat)
+    print (y_test)
+    result = (y_test_hat == y_test)   # True则预测正确，False则预测错误
+    acc = np.mean(result)
+    print ('准确度: %.2f%%' % (100 * acc))
+
     # # 过拟合：错误率
-    # depth = np.arange(1, 15)
-    # err_list = []
-    # for d in depth:
-    #     clf = DecisionTreeClassifier(criterion='entropy', max_depth=d)
-    #     clf = clf.fit(x_train, y_train)
-    #     y_test_hat = clf.predict(x_test)  # 测试数据
-    #     result = (y_test_hat == y_test)  # True则预测正确，False则预测错误
-    #     err = 1 - np.mean(result)
-    #     err_list.append(err)
-    #     print (d, ' 准确度: %.2f%%' % (100 * err))
-    # plt.figure(facecolor='w')
-    # plt.plot(depth, err_list, 'ro-', lw=2)
-    # plt.xlabel(u'决策树深度', fontsize=15)
-    # plt.ylabel(u'错误率', fontsize=15)
-    # plt.title(u'决策树深度与过拟合', fontsize=17)
-    # plt.grid(True)
-    # plt.show()
+    depth = np.arange(1, 15)
+    err_list = []
+    for d in depth:
+        clf = DecisionTreeClassifier(criterion='entropy', max_depth=d)
+        clf = clf.fit(x_train, y_train)
+        y_test_hat = clf.predict(x_test)  # 测试数据
+        result = (y_test_hat == y_test)  # True则预测正确，False则预测错误
+        err = 1 - np.mean(result)
+        err_list.append(err)
+        print (d, ' 准确度: %.2f%%' % (100 * err))
+    plt.figure(facecolor='w')
+    plt.plot(depth, err_list, 'ro-', lw=2)
+    plt.xlabel(u'决策树深度', fontsize=15)
+    plt.ylabel(u'错误率', fontsize=15)
+    plt.title(u'决策树深度与过拟合', fontsize=17)
+    plt.grid(True)
+    plt.show()
