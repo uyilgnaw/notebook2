@@ -44,6 +44,7 @@ if __name__ == "__main__":
     # min_samples_split = 10：如果该结点包含的样本数目大于10，则(有可能)对其分支
     # min_samples_leaf = 10：若将某结点分支后，得到的每个子结点样本数目都大于10，则完成分支；否则，不进行分支
     model = Pipeline([
+        # 标准化为标准正态分布
         ('ss', StandardScaler()),
         # 树的层数为3层，层数过多会造成过拟合
         ('DTC', DecisionTreeClassifier(criterion='entropy', max_depth=3))])

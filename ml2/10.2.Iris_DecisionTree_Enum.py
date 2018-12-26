@@ -8,7 +8,7 @@ from sklearn.tree import DecisionTreeClassifier
 
 
 def iris_type(s):
-    it = {'Iris-setosa': 0, 'Iris-versicolor': 1, 'Iris-virginica': 2}
+    it = {b'Iris-setosa': 0, b'Iris-versicolor': 1, b'Iris-virginica': 2}
     return it[s]
 
 # 'sepal length', 'sepal width', 'petal length', 'petal width'
@@ -18,14 +18,20 @@ if __name__ == "__main__":
     mpl.rcParams['font.sans-serif'] = [u'SimHei']  # 黑体 FangSong/KaiTi
     mpl.rcParams['axes.unicode_minus'] = False
 
-    path = '..\\8.Regression\\8.iris.data'  # 数据文件路径
+    path = 'C:/Users/meridian/Desktop/8.Regression/8.iris.data'  # 数据文件路径
     data = np.loadtxt(path, dtype=float, delimiter=',', converters={4: iris_type})
     x_prime, y = np.split(data, (4,), axis=1)
 
+    # 生成枚举的组合(特征1和特征2，特征1和特征3.....)
     feature_pairs = [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]]
+
     plt.figure(figsize=(10, 9), facecolor='#FFFFFF')
+    # enumerate()函数用于将一个可遍历的数据对象组合为一个索引序列，同时列出数据和数据下标，一般用在for循环中
+    # 可以指定start参数重置下标的初始值
+    # 枚举各个特征进行组合的结果
     for i, pair in enumerate(feature_pairs):
         # 准备数据
+        # x = 0,[0,1]
         x = x_prime[:, pair]
 
         # 决策树学习
@@ -45,9 +51,9 @@ if __name__ == "__main__":
         y_hat = dt_clf.predict(x)
         y = y.reshape(-1)
         c = np.count_nonzero(y_hat == y)    # 统计预测正确的个数
-        print '特征：  ', iris_feature[pair[0]], ' + ', iris_feature[pair[1]],
-        print '\t预测正确数目：', c,
-        print '\t准确率: %.2f%%' % (100 * float(c) / float(len(y)))
+        print ('特征：  ', iris_feature[pair[0]], ' + ', iris_feature[pair[1]],)
+        print ('\t预测正确数目：', c,)
+        print ('\t准确率: %.2f%%' % (100 * float(c) / float(len(y))))
 
         # 显示
         cm_light = mpl.colors.ListedColormap(['#A0FFA0', '#FFA0A0', '#A0A0FF'])
@@ -56,7 +62,7 @@ if __name__ == "__main__":
         y_hat = y_hat.reshape(x1.shape)  # 使之与输入的形状相同
         plt.subplot(2, 3, i+1)
         plt.pcolormesh(x1, x2, y_hat, cmap=cm_light)  # 预测值
-        plt.scatter(x[:, 0], x[:, 1], c=y, edgecolors='k', cmap=cm_dark)  # 样本
+        plt.scatter(x[:, 0], x[:, 1], c=y.ravel(), edgecolors='k', cmap=cm_dark)  # 样本
         plt.xlabel(iris_feature[pair[0]], fontsize=14)
         plt.ylabel(iris_feature[pair[1]], fontsize=14)
         plt.xlim(x1_min, x1_max)
