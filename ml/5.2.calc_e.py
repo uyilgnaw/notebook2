@@ -33,11 +33,11 @@ if __name__ == "__main__":
     t1 = np.linspace(-2, 0, 10, endpoint=False)
     t2 = np.linspace(0, 2, 20)
     t = np.concatenate((t1, t2))
-    print t     # 横轴数据
+    print (t)     # 横轴数据
     y = np.empty_like(t)
     for i, x in enumerate(t):
         y[i] = calc_e(x)
-        print 'e^', x, ' = ', y[i], '(近似值)\t', math.exp(x), '(真实值)'
+        print ('e^', x, ' = ', y[i], '(近似值)\t', math.exp(x), '(真实值)')
         # print '误差：', y[i] - math.exp(x)
     mpl.rcParams['font.sans-serif'] = [u'SimHei']
     mpl.rcParams['axes.unicode_minus'] = False

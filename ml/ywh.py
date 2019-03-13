@@ -113,7 +113,7 @@ if __name__ == "__main__":
     '''
     lr = Pipeline([('sc', StandardScaler()),
                 ('clf', LogisticRegression()) ])
-    lr.fit(x, y.ravel())
+    lr.fit(x, y)
 
     # 画图
     N, M = 1000, 1000    # 横纵各采样多少个值

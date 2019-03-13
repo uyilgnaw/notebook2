@@ -31,7 +31,7 @@ y = data['Sales']
 # print(y)
 
 # 绘制第一种图形
-
+#
 # plt.plot(data['TV'], y, 'ro', label='TV')
 #
 # plt.plot(data['Radio'], y, 'g^', label='Radio')
@@ -46,35 +46,35 @@ y = data['Sales']
 
 # 绘制第二种图形
 
-# plt.figure(figsize=(9,12))
-# # 返回一条给定网格位置的轴
-# plt.subplot(311)
-#
-# plt.plot(data['TV'], y, 'ro')
-#
-# plt.title('TV')
-#
-# plt.grid()
-#
-# plt.subplot(312)
-#
-# plt.plot(data['Radio'], y, 'g^')
-#
-# plt.title('Radio')
-#
-# plt.grid()
-#
-# plt.subplot(313)
-#
-# plt.plot(data['Newspaper'], y, 'b*')
-#
-# plt.title('Newspaper')
-#
-# plt.grid()
-# # 调整子图之间的间隔来减少堆叠
-# plt.tight_layout()
-#
-# plt.show()
+plt.figure(figsize=(9,12))
+# 返回一条给定网格位置的轴
+plt.subplot(311)
+
+plt.plot(data['TV'], y, 'ro')
+
+plt.title('TV')
+
+plt.grid()
+
+plt.subplot(312)
+
+plt.plot(data['Radio'], y, 'g^')
+
+plt.title('Radio')
+
+plt.grid()
+
+plt.subplot(313)
+
+plt.plot(data['Newspaper'], y, 'b*')
+
+plt.title('Newspaper')
+
+plt.grid()
+# 调整子图之间的间隔来减少堆叠
+plt.tight_layout()
+
+plt.show()
 
 '''
 这里将对所给的数据分为训练数据和测试数据，给定随机初始值为1。
