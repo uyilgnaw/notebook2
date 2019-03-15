@@ -177,7 +177,7 @@ def main():
     for i in l3:
         Sheet1.append(i)
     print("写入完成")
-    tq.save('C:/Users/meridian/Desktop/提取练习/已处理.xlsx')
+    tq.save('C:/Users/meridian/Desktop/提取练习/已处理2.xlsx')
 
 
 #
