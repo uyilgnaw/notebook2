@@ -1,0 +1,51 @@
+import openpyxl
+from multiprocessing import Process
+
+
+def Demo():
+    e1 = openpyxl.load_workbook("C:/Users/meridian/Desktop/提取练习/查找结论.xlsx")
+    # e1 = openpyxl.load_workbook("C:/Users/meridian/Desktop/提取练习/待处理.xlsx")
+    w1 = e1.active
+    l1 = []  # l1为所有行的汇总列表
+    for i in w1['A']:
+        i = i.value
+        i = i.split('。')
+        l1.append(i)
+    l2 = []
+
+    for i in l1:
+        l4 = []
+        l3 = []
+
+        l4.append(i[0])
+
+        for j in i:
+           if '乳' in j and '切' in j or '乳Ca' in j :
+
+
+                    l3.append(j)
+
+        l4.append('。'.join(l3))
+        #     l4.append('。'.join(l5))
+        l2.append(l4)
+
+    e2 = openpyxl.Workbook()
+    w2 = e2.active
+    w2.title = "已提取"
+    m = 0
+    for i in l2:
+        w2.append(i)
+        m = m + 1
+        print("已经提取了{0}行".format(m))
+
+    print("提取完成!")
+    print("保存中...")
+    e2.save("C:/Users/meridian/Desktop/提取练习/查找结论已提取.xlsx")
+    # e2.save("C:/Users/meridian/Desktop/提取练习/乳腺超声已提取.xlsx")
+
+if __name__ == '__main__':
+    p = Process(target=Demo)
+    p.daemon = True
+    p.start()
+    p.join()
+    print("保存完成")
