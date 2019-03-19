@@ -51,7 +51,7 @@ def extract():
     l2 = []
     try:
         for m in range(1,51):
-            for i in page(1)['items']:
+            for i in page(m)['items']:
                 l1 = []
                 # print(chuli(1))
                 # print("问题id:",i['questionId'])
@@ -106,7 +106,7 @@ def Demo():
             answer = getUrl(i[0])
             l2.append(answer)
             l3.append(l2)
-            time.sleep(5 + random.random())
+            time.sleep(3 + random.random())
         # print(l3)
         return l3
     except Exception as e:
