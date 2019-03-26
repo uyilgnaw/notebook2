@@ -9,18 +9,18 @@ import openpyxl
 def time_stamp():
     t = time.time()
     t = int(round(t*1000))
-    return t# 返回系统时间戳
+    return t    # 返回系统时间戳
 
-def page(m):
+def Page(m):
 
     url = 'https://bbs.guahao.com/gateway/modulesns/mutualhelp/homepagewaterfall.json'
 
     data = {
-        'firstTime':'{0}'.format(time_stamp()),
-        'pageNo':'{0}'.format(m),
-        'pageSize':'20',
-        'sortMethod':'0',
-        'tagGroupId':"",
+        'firstTime': '{0}'.format(time_stamp()),
+        'pageNo': '{0}'.format(m),
+        'pageSize': '20',
+        'sortMethod': '0',
+        'tagGroupId': "",
         'type':'0'
 }
     data = json.dumps(data)
@@ -51,7 +51,7 @@ def extract():
     l2 = []
     try:
         for m in range(1,51):
-            for i in page(m)['items']:
+            for i in Page(m)['items']:
                 l1 = []
                 # print(chuli(1))
                 # print("问题id:",i['questionId'])
