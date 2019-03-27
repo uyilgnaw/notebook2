@@ -46,11 +46,12 @@ def Page(m):
         return json_data # 返回该页数转化为字典后的数据
     except Exception as e:
         print(e)
-        return 0
+        return
 def extract():
     l2 = []
-    try:
-        for m in range(1,51):
+
+    for m in range(1,4):
+        try:
             for i in Page(m)['items']:
                 l1 = []
                 # print(chuli(1))
@@ -67,11 +68,12 @@ def extract():
                     l2.append(l1)
             time.sleep(3 + random.random())
             print('第{0}页'.format(m))
+        except Exception as e:
+            print(e)
 
-        return l2 # 提取问题ID和问题描述
-    except Exception as e:
-        print(e)
-        return 0
+
+    return l2 # 提取问题ID和问题描述
+
 
 def getUrl(q_id):
     base_url = 'https://bbs.guahao.com/question/'
@@ -111,7 +113,7 @@ def Demo():
         return l3
     except Exception as e:
         print(e)
-        return 0
+        return l3
 def data_format():
     l3 = Demo()
     l5 = []
@@ -150,11 +152,11 @@ def random_Ip():
     return request
 def Ip_pool():
     proxy = {
-        '0':{'http':'195.66.167.204'},
-        '1':{'http':'223.165.243.81'},
-        '2':{'http':'190.90.63.98'},
-        '3':{'http':'46.105.51.183'},
-        '4':{'http':'183.89.108.168'}
+        '0':{'http':'185.32.229.199'},
+        '1':{'http':'119.190.196.100'},
+        '2':{'http':'112.78.38.165'},
+        '3':{'http':'218.38.52.132'},
+        '4':{'http':'111.198.154.116'}
     }
     rad = random.randint(0,4)
     print('Ip地址为{0}'.format(proxy[str(rad)]))
