@@ -5,12 +5,13 @@ import openpyxl
 import os
 def load_data():
     l1 = []
-    rootdir = "C:/Users/meridian/Desktop/json报告"
+    rootdir = "C:/Users/meridian/Desktop/工作/json报告"
     list = os.listdir(rootdir)
     for i in range(0,len(list)):
         path = os.path.join(rootdir,list[i])
         l1.append(path)
     return  l1
+
 
 def handle_data():
     k = 1
@@ -28,6 +29,7 @@ def chuli(s,k):
     setting = s
 
     ss = setting["Items"]
+    # l1 = chuli2(setting)
     l4 = []
     for j in ss:
         l3 = []
@@ -48,6 +50,16 @@ def chuli(s,k):
 
     tq.save('C:/Users/meridian/Desktop/提取练习/已处理{0}.xlsx'.format(k))
 
+
+def chuli2(s):
+    l1 = []
+    setting = s
+    keys = setting.keys()
+    for i in keys:
+        if i != "Items":
+          l1.append(i)
+
+    return l1
 
 
 
